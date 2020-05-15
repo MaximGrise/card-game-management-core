@@ -1,0 +1,36 @@
+components:
+  schemas:
+
+    Deck:
+      type: object
+      required:
+        - id
+        - cards
+      properties:
+        id:
+          type: string
+          format: uuid
+        cards:
+          type: array
+          items:
+            $ref: 'card.yml#/components/schemas/Card'
+
+    DeckType:
+      type: string
+      enum:
+        - STANDARD_52
+        - DOUBLE
+        - NUMBERS_ONLY
+        - FACES_ONLY
+        - CUSTOM
+
+    CreateDeckRequest:
+      type: object
+      required:
+        - cards
+      properties:
+        cards:
+          type: object
+          items:
+            $ref: 'card.yml#/components/schemas/Card'
+          description: The cards in the deck.

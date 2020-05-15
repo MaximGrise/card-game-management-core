@@ -1,0 +1,511 @@
+openapi: 3.0.2
+info:
+  title: Game Management Core
+  version: 0.0.1
+  description: The sample app for LogMeIn
+  contact:
+    name: Maxim Grise
+    email: maxim.grise@gmail.com
+servers:
+  - url: http://localhost/v1/
+    description: Local env
+paths:
+
+
+  # ------------------------------------------------------------------------------------------------------------------------
+  # Game
+  # ------------------------------------------------------------------------------------------------------------------------
+
+  /game:
+    post:
+      summary: POST
+      operationId: createGame
+      requestBody:
+        description: The game creation request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas/game.yml#/components/schemas/CreateGameRequest'
+      responses:
+        '200':
+          description: Game creation success response.
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/game.yml#/components/schemas/Game'
+        '400':
+          description: A mandatory parameter is missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /game/{id}:
+    get:
+      summary: GET
+      operationId: getGame
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID of the game to retrieve
+      responses:
+        '200':
+          description: The game.
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/game.yml#/components/schemas/Game'
+        '400':
+          description: A mandatory parameter is missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Game doesn't exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: DELETE
+      operationId: deleteGame
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID of the game to retrieve
+      responses:
+        '200':
+          description: Game deletion success response.
+        '400':
+          description: A mandatory parameter is missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Game doesn't exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /game/{id}/deck/{deck_id}:
+    post:
+      summary: POST
+      operationId: addDeck
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID of the game
+        - in: path
+          name: deck_id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID of the deck
+      responses:
+        '200':
+          description: Deck added successfully.
+        '400':
+          description: A mandatory parameter is missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: ID doesn't exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: A deck has already been added to this game.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /game/{id}/player/{player_id}:
+    post:
+      summary: POST
+      operationId: addPlayer
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID of the game
+        - in: path
+          name: player_id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID of the player
+      responses:
+        '200':
+          description: Player added successfully.
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/player.yml#/components/schemas/Player'
+        '400':
+          description: A mandatory parameter is missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Player or game doesn't exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: This player is already added to the game.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: DELETE
+      operationId: removePlayer
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID of the game
+        - in: path
+          name: player_id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID of the player
+      responses:
+        '200':
+          description: Player removed successfully.
+        '400':
+          description: A mandatory parameter is missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Game or player doesn't exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Player not part of this game.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+
+  # ------------------------------------------------------------------------------------------------------------------------
+  # Deck
+  # ------------------------------------------------------------------------------------------------------------------------
+  /deck:
+    post:
+      summary: POST
+      operationId: createDeck
+      requestBody:
+        description: The deck creation request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas/deck.yml#/components/schemas/CreateDeckRequest'
+      responses:
+        '200':
+          description: Deck creation success response.
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/deck.yml#/components/schemas/Deck'
+        '400':
+          description: A mandatory parameter is missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /deck/{id}:
+    get:
+      summary: GET
+      operationId: getDeck
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID of the deck to fetch
+      responses:
+        '200':
+          description: Deck found.
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/deck.yml#/components/schemas/Deck'
+        '400':
+          description: A mandatory parameter is missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Deck doesn't exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Deck is currently added to a game and cannot be deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: DELETE
+      operationId: deleteDeck
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID of the deck to delete
+      responses:
+        '200':
+          description: Deck deletion success.
+        '400':
+          description: A mandatory parameter is missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Deck doesn't exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Deck is currently added to a game and cannot be deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ------------------------------------------------------------------------------------------------------------------------
+  # Player
+  # ------------------------------------------------------------------------------------------------------------------------
+
+  /player:
+    post:
+      summary: POST
+      operationId: createPlayer
+      requestBody:
+        description: The player creation request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas/player.yml#/components/schemas/CreatePlayerRequest'
+      responses:
+        '200':
+          description: Player creation success response.
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/player.yml#/components/schemas/Player'
+        '400':
+          description: A mandatory parameter is missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /player/{id}:
+    get:
+      summary: GET
+      operationId: getPlayer
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID of the player to fetch
+      responses:
+        '200':
+          description: Player found.
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/player.yml#/components/schemas/Player'
+        '400':
+          description: A mandatory parameter is missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Deck doesn't exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Deck is currently added to a game and cannot be deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: DELETE
+      operationId: deletePlayer
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID of the player to delete
+      responses:
+        '200':
+          description: Player deletion success.
+        '400':
+          description: A mandatory parameter is missing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Deck doesn't exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Player is currently added to a game and cannot be deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An error occured.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - messages
+        - docLink
+      properties:
+        code:
+          type: string
+          description: The error code describing the error.
+        message:
+          type: array
+          items:
+            type: string
+          description: List of error messages

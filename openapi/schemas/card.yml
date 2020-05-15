@@ -1,0 +1,31 @@
+components:
+  schemas:
+    Card:
+      type: object
+      required:
+        - suit
+        - value
+      properties:
+        suit:
+          type: string
+          enum:
+            - SPADE
+            - HEART
+            - DIAMOND
+            - CLUB
+        value:
+          type: string
+          enum:
+            - ONE
+            - TWO
+            - THREE
+            - FOUR
+            - FIVE
+            - SIX
+            - SEVEN
+            - EIGHT
+            - NINE
+            - JACK
+            - QUEEN
+            - KING
+            - ACE

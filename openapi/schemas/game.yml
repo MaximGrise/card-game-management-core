@@ -1,0 +1,82 @@
+components:
+  schemas:
+
+    Game:
+      type: object
+      required:
+        - id
+        - players
+        - deck
+      properties:
+        id:
+          type: string
+          format: uuid
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/GamePlayer'
+          description: The players currently in play.
+        deck:
+          $ref: '#/components/schemas/GameDeck'
+          description: The deck currently in use.
+
+    GamePlayer:
+      type: object
+      required:
+        - id
+        - name
+        - hand
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        hand:
+          type: array
+          items:
+            $ref: 'card.yml#/components/schemas/Card'
+
+    GameDeck:
+      type: object
+      required:
+        - id
+        - name
+        - hand
+      properties:
+        id:
+          type: string
+          format: uuid
+        unplayed:
+          type: array
+          items:
+            $ref: 'card.yml#/components/schemas/Card'
+        played:
+          type: array
+          items:
+            $ref: 'card.yml#/components/schemas/Card'
+        original_decks:
+          description: The IDs of the decks originally added to the this game deck.
+          type: array
+          items:
+            type: string
+            format: uuid
+
+
+
+
+    # ----------------- requests -------------------
+
+    CreateGameRequest:
+      type: object
+      properties:
+        deck_id:
+          type: string
+          format: uuid
+          description: The ID of the deck to use, can be specified later.
+        players_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The ID of the players participating in the game, can be specified later.

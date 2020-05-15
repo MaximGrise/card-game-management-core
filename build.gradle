@@ -1,0 +1,56 @@
+buildscript {
+    ext {
+        openapiGeneratorVersion = "4.2.3"
+        springBootPluginVersion = "2.2.6.RELEASE"
+    }
+}
+
+plugins {
+    id "org.springframework.boot" version "${springBootPluginVersion}"
+    id "java"
+    id "checkstyle"
+    id "org.openapi.generator" version "${openapiGeneratorVersion}"
+}
+
+apply plugin: "io.spring.dependency-management"
+
+group = 'com.maxim'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '13'
+
+
+//apply from: "./gradle/build.liquibase.gradle"
+apply from: "./gradle/build.openapi.gradle"
+apply from: "./gradle/build.mapstruct.gradle"
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.glassfish.jersey.ext:jersey-bean-validation'
+
+    // Swagger
+    implementation 'io.swagger:swagger-annotations:1.5.24'
+
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-jersey'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+
+    // Database
+    runtimeOnly "com.h2database:h2"
+
+    // Tests
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

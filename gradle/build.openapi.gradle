@@ -1,0 +1,71 @@
+ext {
+    openApiGenerateOutputDir = "${buildDir}/generated/openapi/api".toString()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "${openApiGenerateOutputDir}/src/gen/java"
+        }
+    }
+}
+
+// clean
+task deleteOpenApiGeneratedFiles(type: Delete) {
+    println "deleteOpenApiGeneratedFiles folder: ${openApiGenerateOutputDir}"
+    delete "${openApiGenerateOutputDir}"
+    followSymlinks = true
+}
+clean.dependsOn("deleteOpenApiGeneratedFiles")
+
+// validate
+openApiValidate {
+    inputSpec = "${rootDir}/openapi/openapi.yml"
+}
+
+// generate
+compileJava.dependsOn("generateApi")
+task generateApi(dependsOn: "openApiGenerate")
+openApiGenerate {
+    generatorName = "jaxrs-spec"
+    modelNameSuffix = "Dto"
+//    library = "jaxrs-spec"
+    inputSpec = "${rootDir}/openapi/openapi.yml"
+    outputDir = "${openApiGenerateOutputDir}"
+    skipValidateSpec = false
+    systemProperties = [
+            modelDocs      : "false",
+            models         : "",
+            apis           : "",
+            supportingFiles: "false"
+    ]
+    configOptions = [
+            returnResponse             : "true",
+            prependFormOrBodyParameters: "true",
+            useOptional                : "true",
+            swaggerDocketConfig        : "false",
+            performBeanValidation      : "false",
+            hideGenerationTimestamp    : "true",
+            useBeanValidation          : "true",
+            useTags                    : "true",
+            singleContentTypes         : "true",
+            basePackage                :
+                    "com.payfacto.gamemanagement.core.api",
+            configPackage              :
+                    "com.payfacto.gamemanagement.core.api",
+            apiPackage                 :
+                    "com.payfacto.gamemanagement.core.api",
+            modelPackage               :
+                    "com.payfacto.gamemanagement.core.api",
+            invokerPackage             :
+                    "com.payfacto.gamemanagement.core.api",
+            title                      : rootProject.name,
+            java8                      : "true",
+            dateLibrary                : "java8",
+            serializableModel          : "true",
+            artifactId                 : rootProject.name,
+            interfaceOnly              : "true",
+            skipDefaultInterface       : "true",
+            licenseName                : "All Rights Reserved - Maxim Grise " + new Date().format(" yyyy ")
+    ]
+}
