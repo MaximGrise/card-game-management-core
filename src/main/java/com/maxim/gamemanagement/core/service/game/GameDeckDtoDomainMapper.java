@@ -13,13 +13,18 @@ import org.mapstruct.MapperConfig;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+@Mapper
 public interface GameDeckDtoDomainMapper {
 
   GameDeck toDto(GameDeckDto deck);
 
   GameDeckDto toDomain(GameDeck deck);
 
-  default UUID deckToId(Deck deck) {
-    return deck.getId();
-  }
+//  default Deck idToDeck(UUID id) {
+//    return new Deck(id);
+//  }
+//
+//  default UUID deckToId(Deck deck) {
+//    return deck.getId();
+//  }
 }

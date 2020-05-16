@@ -33,7 +33,7 @@ public class DeckController implements DeckApi {
     try {
       return Response.ok().entity(this.deckService.find(id)).build();
     } catch (NotFoundException e) {
-      throw new ControllerException(DeckControllerError.DECK_NOT_FOUND);
+      throw new ControllerException(DeckError.DECK_NOT_FOUND);
     }
   }
 
@@ -45,7 +45,7 @@ public class DeckController implements DeckApi {
           .entity(this.deckService.create(new DeckDto().cards(createDeckRequestDto.getCards())))
           .build();
     } catch (AlreadyExistsException e) {
-      throw new ControllerException(DeckControllerError.DECK_ALREADY_EXISTS);
+      throw new ControllerException(DeckError.DECK_ALREADY_EXISTS);
     }
   }
 
@@ -56,7 +56,7 @@ public class DeckController implements DeckApi {
       this.deckService.delete(id);
       return Response.ok().build();
     } catch (NotFoundException e) {
-      throw new ControllerException(DeckControllerError.DECK_NOT_FOUND);
+      throw new ControllerException(DeckError.DECK_NOT_FOUND);
     }
   }
 }

@@ -16,7 +16,6 @@ components:
         value:
           type: string
           enum:
-            - ONE
             - TWO
             - THREE
             - FOUR

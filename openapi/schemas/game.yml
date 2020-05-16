@@ -41,8 +41,8 @@ components:
       type: object
       required:
         - id
-        - name
-        - hand
+        - unplayed
+        - played
       properties:
         id:
           type: string
@@ -55,13 +55,28 @@ components:
           type: array
           items:
             $ref: 'card.yml#/components/schemas/Card'
-        original_decks:
-          description: The IDs of the decks originally added to the this game deck.
-          type: array
-          items:
-            type: string
-            format: uuid
 
+    GameScore:
+      type: object
+      required:
+        - player_id
+        - player_name
+        - rank
+        - total_face_value
+      properties:
+        player_id:
+          type: string
+          format: uuid
+          description: The player id.
+        player_name:
+          type: string
+          description: The player name.
+        rank:
+          type: integer
+          description: The score rank of this player.
+        total_face_value:
+          type: integer
+          description: The total face value of the players hand
 
 
 

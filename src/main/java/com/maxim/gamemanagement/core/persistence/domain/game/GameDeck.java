@@ -35,10 +35,6 @@ public class GameDeck {
   @Column(updatable = false, nullable = false, unique = true)
   private UUID id;
 
-  @OneToOne
-  @JoinColumn(updatable = false, nullable = false, unique = false)
-  private Game game;
-
   @NotNull
   @ElementCollection
   @Column(updatable = true, nullable = false, unique = false)
@@ -49,14 +45,16 @@ public class GameDeck {
   @Column(updatable = true, nullable = false, unique = false)
   private List<Card> played;
 
-  @NotNull
-  @OneToMany
-  @JoinColumn(updatable = true, nullable = false, unique = false)
-  private List<Deck> originalDecks;
+//
+//  @NotNull
+//  @OneToMany
+//  @JoinColumn(updatable = true, nullable = false, unique = false)
+//  private List<Deck> originalDecks;
 
   public GameDeck() {
     this.unplayed = new ArrayList<>();
     this.played = new ArrayList<>();
+//    this.originalDecks = new ArrayList<>();
   }
 
   public UUID getId() {
@@ -83,4 +81,13 @@ public class GameDeck {
   public void setPlayed(List<Card> played) {
     this.played = played;
   }
+
+//  public List<Deck> getOriginalDecks() {
+//    return originalDecks;
+//  }
+//
+//  public void setOriginalDecks(
+//      List<Deck> originalDecks) {
+//    this.originalDecks = originalDecks;
+//  }
 }

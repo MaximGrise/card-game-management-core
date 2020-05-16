@@ -15,16 +15,16 @@ import org.mapstruct.ValueMapping;
 import org.mapstruct.ValueMappings;
 
 @Named
-public interface CardDtoDomainMapper {
+public class CardDtoDomainMapper {
 
   // TODO Do proper mapstruct here converting the Enums...
-  default CardDto toDto(Card card) {
+  public CardDto toDto(Card card) {
     return new CardDto().suit(SuitEnum.fromValue(card.getSuit().name())).value(
         ValueEnum.fromValue(card.getValue().name()));
   }
 
   // TODO Do proper mapstruct here converting the Enums...
-  default Card toDomain(CardDto card) {
+  public Card toDomain(CardDto card) {
     return new Card(CardSuit.fromName(card.getSuit().name()),
         CardValue.fromName(card.getValue().name()));
   }

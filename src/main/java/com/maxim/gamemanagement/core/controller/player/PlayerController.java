@@ -30,7 +30,7 @@ public class PlayerController implements PlayerApi {
     try {
       return Response.ok().entity(this.playerService.find(id)).build();
     } catch (NotFoundException e) {
-      throw new ControllerException(PlayerControllerError.PLAYER_NOT_FOUND);
+      throw new ControllerException(PlayerError.PLAYER_NOT_FOUND);
     }
   }
 
@@ -43,7 +43,7 @@ public class PlayerController implements PlayerApi {
               this.playerService.create(new PlayerDto().name(createPlayerRequestDto.getName())))
           .build();
     } catch (AlreadyExistsException e) {
-      throw new ControllerException(PlayerControllerError.PLAYER_ALREADY_EXISTS);
+      throw new ControllerException(PlayerError.PLAYER_ALREADY_EXISTS);
     }
   }
 
@@ -54,7 +54,7 @@ public class PlayerController implements PlayerApi {
       this.playerService.delete(id);
       return Response.ok().build();
     } catch (NotFoundException e) {
-      throw new ControllerException(PlayerControllerError.PLAYER_NOT_FOUND);
+      throw new ControllerException(PlayerError.PLAYER_NOT_FOUND);
     }
   }
 }

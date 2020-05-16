@@ -29,7 +29,7 @@ public class Player {
   private UUID id;
 
   @NotNull
-  @Column(updatable = true, nullable = false, unique = true)
+  @Column(updatable = true, nullable = false, unique = false)
   private String name;
 
   public Player() {

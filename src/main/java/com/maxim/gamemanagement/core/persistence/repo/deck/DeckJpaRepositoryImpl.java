@@ -2,6 +2,7 @@ package com.maxim.gamemanagement.core.persistence.repo.deck;
 
 import com.maxim.gamemanagement.core.persistence.domain.deck.Deck;
 import com.maxim.gamemanagement.core.exception.NotFoundException;
+import java.util.Comparator;
 import java.util.UUID;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
@@ -33,6 +34,8 @@ public class DeckJpaRepositoryImpl implements DeckRepository {
   @Transactional
   public Deck insert(Deck deck) {
     try {
+      // FIXME kind of a business logic, should probably not be here
+      deck.getCards().sort(Comparator.naturalOrder());
       this.em.persist(deck);
     } catch (EntityExistsException e) {
       logger.warn("Entity {} already exists.", deck);

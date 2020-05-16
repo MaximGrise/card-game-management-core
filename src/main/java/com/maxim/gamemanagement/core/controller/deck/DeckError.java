@@ -1,12 +1,12 @@
-package com.maxim.gamemanagement.core.controller.game;
+package com.maxim.gamemanagement.core.controller.deck;
 
 import com.maxim.gamemanagement.core.controller.ControllerError;
 import org.springframework.http.HttpStatus;
 
-public enum GameControllerError implements ControllerError {
+public enum DeckError implements ControllerError {
 
-  GAME_ALREADY_EXISTS("game-1", "Game already exists.", HttpStatus.CONFLICT),
-  GAME_NOT_FOUND("game-2", "Game not found.", HttpStatus.NOT_FOUND);
+  DECK_ALREADY_EXISTS("deck-1", "Deck already exists.", HttpStatus.CONFLICT),
+  DECK_NOT_FOUND("deck-2", "Deck not found.", HttpStatus.NOT_FOUND);
 
   private final String code;
 
@@ -14,7 +14,7 @@ public enum GameControllerError implements ControllerError {
 
   private final HttpStatus status;
 
-  GameControllerError(String code, String description,
+  DeckError(String code, String description,
       HttpStatus status) {
     this.code = code;
     this.description = description;

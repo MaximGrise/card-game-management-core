@@ -43,6 +43,12 @@ public class GameJpaRepositoryImpl implements GameRepository {
 
   @Override
   @Transactional
+  public Game update(Game game) {
+    return this.em.merge(game);
+  }
+
+  @Override
+  @Transactional
   public void delete(UUID id) throws NotFoundException {
     Game Game = this.em.find(Game.class, id);
     if (Game == null) {

@@ -33,10 +33,6 @@ public class GamePlayer {
   @Column(updatable = false, nullable = false, unique = true)
   private UUID id;
 
-  @ManyToOne
-  @JoinColumn(updatable = false, nullable = false, unique = false)
-  private Game game;
-
   @NotNull
   @Column(updatable = true, nullable = false, unique = false)
   @ElementCollection
@@ -48,11 +44,11 @@ public class GamePlayer {
   private Player player;
 
   public GamePlayer() {
+    this.hand = new ArrayList<>();
   }
 
-  public GamePlayer(UUID id, List<Card> hand, Player player) {
-    this.id = id;
-    this.hand = hand;
+  public GamePlayer(Player player) {
+    this.hand = new ArrayList<>();
     this.player = player;
   }
 

@@ -5,7 +5,7 @@ import com.payfacto.gamemanagement.core.api.CardDto.SuitEnum;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Card {
+public class Card implements Comparable<Card> {
 
   private CardSuit suit;
   private CardValue value;
@@ -16,6 +16,17 @@ public class Card {
   public Card(CardSuit suit, CardValue value) {
     this.suit = suit;
     this.value = value;
+  }
+
+  @Override
+  public int compareTo(Card o) {
+    if (this.getValue().value > o.getValue().value) {
+      return -1;
+    } else if (this.getValue().value < o.getValue().value) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 
   public enum CardSuit {
@@ -35,19 +46,28 @@ public class Card {
   }
 
   public enum CardValue {
-    ONE,
-    TWO,
-    THREE,
-    FOUR,
-    FIVE,
-    SIX,
-    SEVEN,
-    EIGHT,
-    NINE,
-    JACK,
-    QUEEN,
-    KING,
-    ACE;
+    TWO(2),
+    THREE(3),
+    FOUR(4),
+    FIVE(5),
+    SIX(6),
+    SEVEN(7),
+    EIGHT(8),
+    NINE(9),
+    JACK(10),
+    QUEEN(11),
+    KING(12),
+    ACE(1);
+
+    private final int value;
+
+    public int getIntValue() {
+      return value;
+    }
+
+    private CardValue(int value) {
+      this.value = value;
+    }
 
     public static CardValue fromName(String name) {
       for (CardValue b : CardValue.values()) {
@@ -55,7 +75,7 @@ public class Card {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + name + "'");
+      throw new IllegalArgumentException("Unexpected name '" + name + "'");
     }
   }
 

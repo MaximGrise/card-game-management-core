@@ -36,6 +36,10 @@ public class Deck {
     this.cards = new ArrayList<>();
   }
 
+  public Deck(UUID id) {
+    this.id = id;
+  }
+
   public UUID getId() {
     return id;
   }
